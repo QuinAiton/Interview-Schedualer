@@ -7,14 +7,13 @@ export const InterviewerListItem = (props) => {
     'interviewers__item--selected': props.selected,
   });
   return (
-    <li className={SelectedListItem}>
+    <li className={SelectedListItem} onClick={props.setInterviewer}>
       <img
         className='interviewers__item-image'
         src={props.avatar}
-        alt='Sylvia Palmer'
-        onClick={props.setInterviewer}
+        alt={props.name}
       />
-      {props.name}
+      {props.selected && props.name}
     </li>
   );
 };
