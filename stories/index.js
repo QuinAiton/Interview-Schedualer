@@ -14,6 +14,8 @@ import { Appointment } from 'components/Appointments/Index';
 import { Header } from 'components/Appointments/Header';
 import { Empty } from 'components/Appointments/Empty';
 import { Show } from 'components/Appointments/Show';
+import { Confirm } from 'components/Appointments/Confirm';
+import { Status } from 'components/Appointments/Status';
 
 storiesOf('Button', module)
   .addParameters({
@@ -150,4 +152,12 @@ storiesOf('Appointment', module)
       onEdit={action('onEdit')}
       onDelete={action('onDelete')}
     />
-  ));
+  ))
+  .add('Confirm', () => (
+    <Confirm
+      message='Delete the appointment?'
+      onCancel={action('onCancel')}
+      onConfirm={action('onConfirm')}
+    />
+  ))
+  .add('Status', () => <Status message='Deleting' />);
