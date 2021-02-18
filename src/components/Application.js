@@ -1,28 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'components/Application.scss';
 import { DayList } from './DayList';
-const days = [
-  {
-    id: 1,
-    name: 'Monday',
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: 'Tuesday',
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: 'Wednesday',
-    spots: 0,
-  },
-];
+import { Appointment } from './Appointments/Index';
+import axios from 'axios';
 
 const appointments = [
   {
     id: 1,
-    time: '12pm',
+    time: '9am',
   },
   {
     id: 2,
@@ -36,9 +21,58 @@ const appointments = [
       },
     },
   },
+  {
+    id: 3,
+    time: '2pm',
+  },
+  {
+    id: 4,
+    time: '3pm',
+    interview: {
+      student: 'Quinten Aiton',
+      interviewer: {
+        id: 2,
+        name: 'Tori Malcolm',
+        avatar: 'https://i.imgur.com/Nmx0Qxo.png',
+      },
+    },
+  },
+  {
+    id: 5,
+    time: '4pm',
+    interview: {
+      student: 'Rob Morris',
+      interviewer: {
+        id: 5,
+        name: 'Sven Jones',
+        avatar: 'https://i.imgur.com/twYrpay.jpg',
+      },
+    },
+  },
 ];
+
 export default function Application(props) {
-  const [day, setDay] = useState('Monday');
+  // State
+  const [state, setState] = useState({
+    day: 'Monday',
+    days: [],
+  });
+  const setDay = (day) => setState((cur) => ({ ...cur, day }));
+  const setDays = (days) => setState((cur) => ({ ...cur, days }));
+
+  //API Managment
+  useEffect(() => {
+    axios
+      .get('api/days')
+      .then((response) => {
+        setDays([...response.data]);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const Appointements = appointments.map((appointment) => {
+    return <Appointment key={appointment.id} {...appointment} />;
+  });
 
   return (
     <main className='layout'>
@@ -50,7 +84,7 @@ export default function Application(props) {
         />
         <hr className='sidebar__separator sidebar--centered' />
         <nav className='sidebar__menu'>
-          <DayList days={days} day={day} setDay={setDay} />
+          <DayList days={state.days} day={state.day} setDay={setDay} />
         </nav>
         <img
           className='sidebar__lhl sidebar--centered'
@@ -58,7 +92,9 @@ export default function Application(props) {
           alt='Lighthouse Labs'
         />
       </section>
-      <section className='schedule'></section>
+      <section className='schedule'>
+        {Appointements}, <Appointment key='last' time='5pm' />
+      </section>
     </main>
   );
 }
