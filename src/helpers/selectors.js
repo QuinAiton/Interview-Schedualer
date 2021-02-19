@@ -27,3 +27,17 @@ export const getInterview = (state, interview) => {
   }
   return interviewerData;
 };
+
+export const getInterviewersForDay = (state, day) => {
+  const interviewers = [];
+  const days = state.days;
+  const daysFound = days.filter((interviewer) => interviewer.name === day);
+  if (!daysFound[0]) {
+    return interviewers;
+  }
+  const interviewerID = daysFound[0].interviewers;
+  for (const interviewer of interviewerID) {
+    interviewers.push(state.interviewers[interviewer]);
+  }
+  return interviewers;
+};

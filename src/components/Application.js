@@ -5,6 +5,7 @@ import { DayList } from './DayList';
 import { Appointment } from './Appointments/Index';
 import { getAppointmentsForDay } from '../helpers/selectors';
 import { getInterview } from '../helpers/selectors';
+import { getInterviewersForDay } from '../helpers/selectors';
 
 export default function Application(props) {
   // State
@@ -12,6 +13,7 @@ export default function Application(props) {
     day: 'Monday',
     days: [],
     appointments: {},
+    interviewers: [],
   });
 
   const setDay = (day) => setState((cur) => ({ ...cur, day }));
@@ -33,12 +35,13 @@ export default function Application(props) {
       const [daysApi, appointmentsApi, interviewersApi] = all;
     });
   }, []);
-
+  const interviewersForDay = getInterviewersForDay(state, state.day);
   const appointments = getAppointmentsForDay(state, state.day);
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     return (
       <Appointment
+        interviewers={interviewersForDay}
         interviewer={interview}
         key={appointment.id}
         {...appointment}
