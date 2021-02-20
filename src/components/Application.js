@@ -44,14 +44,9 @@ export default function Application(props) {
       [id]: appointment,
     };
 
-    return axios
-      .put(`api/appointments/${id}`, { interview })
-      .then((data) => {
-        setState({ ...state, appointments });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    return axios.put(`api/appointments/${id}`, { interview }).then((data) => {
+      setState({ ...state, appointments });
+    });
   };
 
   const cancelInterview = (id) => {
@@ -69,9 +64,6 @@ export default function Application(props) {
       .then((data) => {
         console.log(data);
         setState({ ...state, appointments });
-      })
-      .catch((err) => {
-        console.log('error', err);
       });
   };
 

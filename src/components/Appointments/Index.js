@@ -17,6 +17,8 @@ export const Appointment = (props) => {
   const SAVING = 'SAVING';
   const DELETE = 'DELETE';
   const CONFIRM = 'CONFIRM';
+  const ERROR_SAVE = 'ERROR_SAVE';
+  const ERROR_DELETE = 'ERROR_DELETE';
 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -34,20 +36,20 @@ export const Appointment = (props) => {
       .then(() => {
         transition(SHOW);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        transition(ERROR_SAVE, true);
       });
   };
 
   const onDelete = (id) => {
-    transition(DELETE);
+    transition(DELETE, true);
     props
       .cancelInterview(props.id)
       .then(() => {
         transition(EMPTY);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
+        transition(ERROR_DELETE, true);
       });
   };
   return (
@@ -56,6 +58,12 @@ export const Appointment = (props) => {
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SAVING && <Status message='Saving Interview' />}
       {mode === DELETE && <Status message='Deleting Interview' />}
+      {mode === ERROR_SAVE && (
+        <Error message='Could Not Create Appointment' onClose={() => back()} />
+      )}
+      {mode === ERROR_DELETE && (
+        <Error message='Count Not Delete Appointment' onClose={() => back()} />
+      )}
       {mode === CONFIRM && (
         <Confirm onConfirm={onDelete} onCancel={() => back()} />
       )}
