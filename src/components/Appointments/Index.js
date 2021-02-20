@@ -19,12 +19,17 @@ export const Appointment = (props) => {
   const CONFIRM = 'CONFIRM';
   const ERROR_SAVE = 'ERROR_SAVE';
   const ERROR_DELETE = 'ERROR_DELETE';
+  const ERROR_EMPTY = 'ERROR_EMPTY';
 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
 
   const save = (name, interviewer) => {
+    if (!name || !interviewer) {
+      transition(ERROR_EMPTY);
+      return;
+    }
     transition(SAVING);
     const interview = {
       student: name,
@@ -64,6 +69,12 @@ export const Appointment = (props) => {
       {mode === ERROR_DELETE && (
         <Error message='Count Not Delete Appointment' onClose={() => back()} />
       )}
+      {mode === ERROR_EMPTY && (
+        <Error
+          message='Please Fill Out All The Feilds'
+          onClose={() => back()}
+        />
+      )}
       {mode === CONFIRM && (
         <Confirm onConfirm={onDelete} onCancel={() => back()} />
       )}
@@ -77,7 +88,7 @@ export const Appointment = (props) => {
       {mode === SHOW && (
         <Show
           student={props.interview.student}
-          interviewer={props.interviewer.interviewer}
+          interviewer={props.interviewer}
           onEdit={() => transition(EDIT)}
           onDelete={() => transition(CONFIRM)}
         />
