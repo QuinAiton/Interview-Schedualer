@@ -16,8 +16,6 @@ export default function Application(props) {
     interviewers: [],
   });
 
-  const setDay = (day) => setState((cur) => ({ ...cur, day }));
-
   //API Managment
   useEffect(() => {
     Promise.all([
@@ -32,20 +30,66 @@ export default function Application(props) {
         interviewers: all[2].data,
       }));
 
-      const [daysApi, appointmentsApi, interviewersApi] = all;
+      // const [daysApi, appointmentsApi, interviewersApi] = all;
     });
   }, []);
+
+  const bookInterview = (id, interview) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    return axios
+      .put(`api/appointments/${id}`, { interview })
+      .then((data) => {
+        setState({ ...state, appointments });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const cancelInterview = (id) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null,
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+
+    return axios
+      .delete(`api/appointments/${id}`, { data: { appointments } })
+      .then((data) => {
+        console.log(data);
+        setState({ ...state, appointments });
+      })
+      .catch((err) => {
+        console.log('error', err);
+      });
+  };
+
+  const setDay = (day) => setState((cur) => ({ ...cur, day }));
+
   const interviewersForDay = getInterviewersForDay(state, state.day);
   const appointments = getAppointmentsForDay(state, state.day);
+
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
-    console.log(interview);
     return (
       <Appointment
+        key={appointment.id}
         interviewers={interviewersForDay}
         interviewer={interview}
-        key={appointment.id}
         {...appointment}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });

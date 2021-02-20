@@ -15,6 +15,7 @@ export const Form = (props) => {
     props.onCancel();
     reset();
   };
+
   const save = () => {
     props.onSave(name, interviewer);
     setName(name);
