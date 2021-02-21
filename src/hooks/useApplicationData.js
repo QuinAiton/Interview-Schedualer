@@ -24,7 +24,7 @@ export const useApplicationData = () => {
         interviewers: all[2].data,
       }));
     });
-  }, [state]);
+  }, []);
 
   const bookInterview = (id, interview) => {
     const appointment = {
