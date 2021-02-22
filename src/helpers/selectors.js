@@ -44,9 +44,7 @@ export const getInterviewersForDay = (state, day) => {
 
 export const updateSpots = function (day, days, appointments) {
   const dayObj = days.find((item) => item.name === day);
-
   const appointmentIds = dayObj.appointments;
-
   let spots = 0;
 
   for (const id of appointmentIds) {

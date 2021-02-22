@@ -67,8 +67,6 @@ export const useApplicationData = () => {
   const setDay = (day) => dispatch({ type: SET_DAY, day });
 
   const bookInterview = (id, interview) => {
-    // const [dayInfo, spotCount] = getDayId(state, state.day);
-    // const dayIndex = Number(dayInfo[0].id) - 1;
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -79,17 +77,6 @@ export const useApplicationData = () => {
       [id]: appointment,
     };
 
-    // const day = {
-    //   ...state.days[dayIndex],
-    //   spots: spotCount,
-    // };
-
-    // const days = {
-    //   ...state.days,
-    //   [dayIndex]: day,
-    // };
-    // console.log(days);
-
     return axios.put(`api/appointments/${id}`, { interview }).then(() => {
       const days = updateSpots(state.day, state.days, appointments); //use in cancel interview too
       dispatch({ type: SET_INTERVIEW, appointments, days });
@@ -97,9 +84,6 @@ export const useApplicationData = () => {
   };
 
   const cancelInterview = (id) => {
-    // const [dayInfo, spotCount] = getDayId(state, state.day);
-    // const dayIndex = Number(dayInfo[0].id) - 1;
-
     const appointment = {
       ...state.appointments[id],
       interview: null,
@@ -108,16 +92,6 @@ export const useApplicationData = () => {
       ...state.appointments,
       [id]: appointment,
     };
-
-    // const day = {
-    //   ...state.days[dayIndex],
-    //   spots: spotCount,
-    // };
-
-    // const days = {
-    //   ...state.days,
-    //   [dayIndex]: day,
-    // };
 
     return axios
       .delete(`api/appointments/${id}`, { data: { appointments } })
