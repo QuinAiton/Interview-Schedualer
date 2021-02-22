@@ -1,6 +1,6 @@
 import { useReducer, useEffect } from 'react';
 import axios from 'axios';
-import { getDayId } from '../helpers/selectors';
+import { updateSpots } from '../helpers/selectors';
 
 const SET_DAY = 'SET_DAY';
 const SET_APPLICATION_DATA = 'SET_APPLICATION_DATA';
@@ -20,22 +20,18 @@ function reducer(state, action) {
         interviewers: action.interviewers,
       };
 
-    //  Left Off Here........  Days data not coming back as an array/ Causing problems with filter
-
     case SET_INTERVIEW:
-      console.log(action.days, ' action');
       return {
         ...state,
         appointments: action.appointments,
-        days: [action.days],
+        days: action.days,
       };
 
     case REMOVE_INTERVIEW:
-      console.log(action.days, ' action');
       return {
         ...state,
         appointments: action.appointments,
-        days: [action.days],
+        days: action.days,
       };
 
     default:
@@ -71,8 +67,8 @@ export const useApplicationData = () => {
   const setDay = (day) => dispatch({ type: SET_DAY, day });
 
   const bookInterview = (id, interview) => {
-    const [dayInfo, spotCount] = getDayId(state, state.day);
-    const dayIndex = Number(dayInfo.id) - 1;
+    // const [dayInfo, spotCount] = getDayId(state, state.day);
+    // const dayIndex = Number(dayInfo[0].id) - 1;
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -83,24 +79,27 @@ export const useApplicationData = () => {
       [id]: appointment,
     };
 
-    const day = {
-      ...state.days[dayIndex],
-      spots: spotCount - 1,
-    };
+    // const day = {
+    //   ...state.days[dayIndex],
+    //   spots: spotCount,
+    // };
 
-    const days = {
-      ...state.days,
-      [dayIndex]: day,
-    };
+    // const days = {
+    //   ...state.days,
+    //   [dayIndex]: day,
+    // };
+    // console.log(days);
 
     return axios.put(`api/appointments/${id}`, { interview }).then(() => {
+      const days = updateSpots(state.day, state.days, appointments); //use in cancel interview too
       dispatch({ type: SET_INTERVIEW, appointments, days });
     });
   };
 
   const cancelInterview = (id) => {
-    const [dayInfo, spotCount] = getDayId(state, state.day);
-    const dayIndex = Number(dayInfo.id) - 1;
+    // const [dayInfo, spotCount] = getDayId(state, state.day);
+    // const dayIndex = Number(dayInfo[0].id) - 1;
+
     const appointment = {
       ...state.appointments[id],
       interview: null,
@@ -110,19 +109,20 @@ export const useApplicationData = () => {
       [id]: appointment,
     };
 
-    const day = {
-      ...state.days[dayIndex],
-      spots: spotCount + 1,
-    };
+    // const day = {
+    //   ...state.days[dayIndex],
+    //   spots: spotCount,
+    // };
 
-    const days = {
-      ...state.days,
-      [dayIndex]: day,
-    };
+    // const days = {
+    //   ...state.days,
+    //   [dayIndex]: day,
+    // };
 
     return axios
       .delete(`api/appointments/${id}`, { data: { appointments } })
       .then(() => {
+        const days = updateSpots(state.day, state.days, appointments);
         dispatch({ type: SET_INTERVIEW, appointments, days });
       });
   };
