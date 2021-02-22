@@ -10,16 +10,16 @@ import { Confirm } from 'components/Appointments/Confirm';
 import { Error } from 'components/Appointments/Error';
 
 export const Appointment = (props) => {
-  const EMPTY = 'EMPTY';
-  const SHOW = 'SHOW';
-  const CREATE = 'CREATE';
-  const EDIT = 'EDIT';
-  const SAVING = 'SAVING';
-  const DELETE = 'DELETE';
-  const CONFIRM = 'CONFIRM';
-  const ERROR_SAVE = 'ERROR_SAVE';
-  const ERROR_DELETE = 'ERROR_DELETE';
-  const ERROR_EMPTY = 'ERROR_EMPTY';
+  const EMPTY = 'EMPTY',
+    SHOW = 'SHOW',
+    CREATE = 'CREATE',
+    EDIT = 'EDIT',
+    SAVING = 'SAVING',
+    DELETE = 'DELETE',
+    CONFIRM = 'CONFIRM',
+    ERROR_SAVE = 'ERROR_SAVE',
+    ERROR_DELETE = 'ERROR_DELETE',
+    ERROR_EMPTY = 'ERROR_EMPTY';
 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY

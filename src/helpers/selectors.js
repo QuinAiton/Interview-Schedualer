@@ -41,3 +41,19 @@ export const getInterviewersForDay = (state, day) => {
   }
   return interviewers;
 };
+
+export const updateSpots = function (day, days, appointments) {
+  const dayObj = days.find((item) => item.name === day);
+  const appointmentIds = dayObj.appointments;
+  let spots = 0;
+
+  for (const id of appointmentIds) {
+    const appointment = appointments[id];
+    if (!appointment.interview) {
+      spots++;
+    }
+  }
+  const newDayObj = { ...dayObj, spots };
+  const newArray = days.map((item) => (item.name === day ? newDayObj : item));
+  return newArray;
+};
