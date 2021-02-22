@@ -31,6 +31,7 @@ export const getInterview = (state, interview) => {
 export const getInterviewersForDay = (state, day) => {
   const interviewers = [];
   const days = state.days;
+  console.log(days, 'interview days');
   const daysFound = days.filter((interviewer) => interviewer.name === day);
   if (!daysFound[0]) {
     return interviewers;
@@ -40,4 +41,21 @@ export const getInterviewersForDay = (state, day) => {
     interviewers.push(state.interviewers[interviewer]);
   }
   return interviewers;
+};
+
+export const getDayId = (state, day) => {
+  const spots = [];
+  let spotCount = 0;
+  const days = state.days;
+  const daysFound = days.filter((appointment) => appointment.name === day);
+  spots.push(daysFound[0]);
+
+  const nullSpots = getAppointmentsForDay(state, day);
+  for (const key in nullSpots) {
+    if (!nullSpots[key].interview) {
+      spotCount++;
+    }
+  }
+  spots.push(spotCount);
+  return spots;
 };
