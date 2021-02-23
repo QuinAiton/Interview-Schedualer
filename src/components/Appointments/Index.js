@@ -26,10 +26,10 @@ export const Appointment = (props) => {
   );
 
   const save = (name, interviewer) => {
-    if (!name || !interviewer) {
-      transition(ERROR_EMPTY);
-      return;
-    }
+    // if (!name || !interviewer) {
+    //   transition(ERROR_EMPTY);
+    //   return;
+    // }
     transition(SAVING);
     const interview = {
       student: name,
