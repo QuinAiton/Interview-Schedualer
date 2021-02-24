@@ -48,8 +48,8 @@ export const useApplicationData = () => {
     appointments: {},
     interviewers: [],
   });
-  // console.log(WebSocket);
-  // const Socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+  console.log(WebSocket);
+  const Socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
   useEffect(() => {
     Promise.all([
       axios.get('api/days'),
