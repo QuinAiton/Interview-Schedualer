@@ -3,9 +3,9 @@ import { InterviewerListItem } from 'components/InterviewerListItem';
 import propTypes from 'prop-types';
 
 export const InterviewerList = (props) => {
-  InterviewerList.propTypes = {
-    interviewer: propTypes.array.isRequired,
-  };
+  // InterviewerList.propTypes = {
+  //   interviewer: propTypes.array.isRequired,
+  // };
   const interviewers = props.interviewers.map((interviewer) => {
     return (
       <InterviewerListItem
