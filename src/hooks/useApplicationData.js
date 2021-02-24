@@ -48,14 +48,12 @@ export const useApplicationData = () => {
     appointments: {},
     interviewers: [],
   });
-  console.log(WebSocket);
-  const Socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+
   useEffect(() => {
     Promise.all([
       axios.get('api/days'),
       axios.get('api/appointments'),
       axios.get('api/interviewers'),
-      axios.get(process.env.REACT_APP_WEBSOCKET_URL),
     ]).then((response) => {
       dispatch({
         type: SET_APPLICATION_DATA,
@@ -65,6 +63,16 @@ export const useApplicationData = () => {
       });
     });
   }, []);
+
+  useEffect(() => {
+    const Socket = new WebSocket(`${process.env.REACT_APP_WEBSOCKET_URL}`);
+    Socket.onopen = (event) => {
+      Socket.send('ping');
+    };
+    Socket.onmessage = (event) => {
+      console.log(`Message Received ${event.data}`);
+    };
+  });
 
   const setDay = (day) => dispatch({ type: SET_DAY, day });
 
