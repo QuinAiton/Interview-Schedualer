@@ -36,7 +36,7 @@ Interview Scheduler is a full stack web application built with React, PostgreSQl
     - react-hooks-testing-library
     - react-scripts
 
-## testing
+## Testing
 - StoryBook 
 - Jest 
 - Cypress
