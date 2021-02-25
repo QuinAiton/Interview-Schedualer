@@ -26,10 +26,10 @@ export const Appointment = (props) => {
   );
 
   const save = (name, interviewer) => {
-    if (!name || !interviewer) {
-      transition(ERROR_EMPTY);
-      return;
-    }
+    // if (!name || !interviewer) {
+    //   transition(ERROR_EMPTY);
+    //   return;
+    // }
     transition(SAVING);
     const interview = {
       student: name,
@@ -58,16 +58,22 @@ export const Appointment = (props) => {
       });
   };
   return (
-    <article className='appointment'>
+    <article className='appointment' data-testid='appointment'>
       <Header time={props.time} />
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SAVING && <Status message='Saving Interview' />}
       {mode === DELETE && <Status message='Deleting Interview' />}
       {mode === ERROR_SAVE && (
-        <Error message='Could Not Create Appointment' onClose={() => back()} />
+        <Error
+          message='Sorry We Were Not Able To Create the Appointment'
+          onClose={() => back()}
+        />
       )}
       {mode === ERROR_DELETE && (
-        <Error message='Count Not Delete Appointment' onClose={() => back()} />
+        <Error
+          message='Sorry We Were Not Able To Delete the Appointment'
+          onClose={() => back()}
+        />
       )}
       {mode === ERROR_EMPTY && (
         <Error
@@ -76,7 +82,11 @@ export const Appointment = (props) => {
         />
       )}
       {mode === CONFIRM && (
-        <Confirm onConfirm={onDelete} onCancel={() => back()} />
+        <Confirm
+          message='Are you Sure You Want to Delete This Interview?'
+          onConfirm={onDelete}
+          onCancel={() => back()}
+        />
       )}
       {mode === CREATE && (
         <Form
