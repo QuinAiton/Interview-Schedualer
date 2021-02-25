@@ -36,6 +36,11 @@ Interview Scheduler is a full stack web application built with React, PostgreSQl
     - react-hooks-testing-library
     - react-scripts
 
+## testing
+- StoryBook 
+- Jest 
+- Cypress
+
 ## ScreenShots
 !["Scheduler Home Page"](https://github.com/QuinAiton/Interview-Schedualer/blob/master/docs/Interview-Home.png?raw=true)
 !["Creating Interview"](https://github.com/QuinAiton/Interview-Schedualer/blob/master/docs/Interview-Add.png?raw=true)
