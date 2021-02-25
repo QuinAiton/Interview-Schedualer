@@ -48,14 +48,12 @@ export const useApplicationData = () => {
     appointments: {},
     interviewers: [],
   });
-  // console.log(WebSocket);
-  // const Socket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+
   useEffect(() => {
     Promise.all([
       axios.get('api/days'),
       axios.get('api/appointments'),
       axios.get('api/interviewers'),
-      axios.get(process.env.REACT_APP_WEBSOCKET_URL),
     ]).then((response) => {
       dispatch({
         type: SET_APPLICATION_DATA,
@@ -80,7 +78,7 @@ export const useApplicationData = () => {
     };
 
     return axios.put(`api/appointments/${id}`, { interview }).then(() => {
-      const days = updateSpots(state.day, state.days, appointments); //use in cancel interview too
+      const days = updateSpots(state.day, state.days, appointments);
       dispatch({ type: SET_INTERVIEW, appointments, days });
     });
   };
@@ -102,6 +100,40 @@ export const useApplicationData = () => {
         dispatch({ type: SET_INTERVIEW, appointments, days });
       });
   };
+  useEffect(() => {
+    const Socket = new WebSocket(`${process.env.REACT_APP_WEBSOCKET_URL}`);
+    Socket.onopen = (event) => {
+      Socket.send('ping');
+    };
+    Socket.onmessage = (event) => {
+      const response = JSON.parse(event.data);
+      if (response.type === 'SET_INTERVIEW' && response.interview) {
+        const appointment = {
+          ...state.appointments[response.id],
+          interview: { ...response.interview },
+        };
+
+        const appointments = {
+          ...state.appointments,
+          [response.id]: appointment,
+        };
+        const days = updateSpots(state.day, state.days, appointments);
+        dispatch({ type: SET_INTERVIEW, appointments, days });
+      }
+      if (response.type === 'SET_INTERVIEW' && !response.interview) {
+        const appointment = {
+          ...state.appointments[response.id],
+          interview: null,
+        };
+        const appointments = {
+          ...state.appointments,
+          [response.id]: appointment,
+        };
+        const days = updateSpots(state.day, state.days, appointments);
+        dispatch({ type: SET_INTERVIEW, appointments, days });
+      }
+    };
+  }, [state]);
 
   return { state, bookInterview, cancelInterview, setDay };
 };
