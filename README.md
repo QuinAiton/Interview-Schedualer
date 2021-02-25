@@ -21,3 +21,17 @@ npm test
 ```sh
 npm run storybook
 ```
+
+## About
+
+Interview Scheduler is a full stack web application built with React, PostgreSQl and Node/Express. This application allows for users to create, manage and organize their interviews in an effor to help stream line the process. Interview Scheduler also takes advantage of websockets in order to allow for the app to scale to larger buisnesses, allowing for real time changes to occur when multiple users are using the application.
+
+## Dependencies
+
+    - axios
+    - classnames
+    - normalize.css
+    - react
+    - react-dom
+    - react-hooks-testing-library
+    - react-scripts
